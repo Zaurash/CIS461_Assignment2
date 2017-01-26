@@ -1,0 +1,5 @@
+#! /bin/bash
+#
+#  Run the scanner as a java program
+#
+java scanner_driver $1
