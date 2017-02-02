@@ -2,4 +2,11 @@
 #
 #  Run the scanner as a java program
 #
-java scanner_driver $1
+locality=`pwd`
+cat >runscript <<EOF
+#1 /bin/bash
+java -cp .:.${locality} scanner_driver $1
+EOF
+chmod a+x runscript
+
+./runscript
