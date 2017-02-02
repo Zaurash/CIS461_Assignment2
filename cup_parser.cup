@@ -1,0 +1,14 @@
+import java_cup.runtime.*;
+
+parser code {:
+
+
+:};
+
+terminal	CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN, STRING, INTEGER, OBJ, BOOLEAN, TRUE, FALSE, AND, OR, NOT, NOTHING, none, PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, COMMA, SEMICOLON, DOT, COLON, EQUALS, ATMOST, LESS, ATLEAST, MORE, IDENT, INT
+
+non terminal Object     expr_list, expr_part;
+
+   expr_list ::= expr_list expr_part
+                 |
+                 expr_part;

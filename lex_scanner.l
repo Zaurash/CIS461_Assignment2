@@ -1,6 +1,5 @@
-/* String,Integer,Obj,... should I not list them in identifiers even though they're predifined identifiers? */
-/* Is this way of printing to out fine? */
-/* In the makefile, the scanner keyword for executing doesn't seem to work */
+/* How does Cup work? */
+/* We're using cup to both work with the lexer and the parser? Are they different sections in the cup file? */
 
 
 import java_cup.runtime.*;

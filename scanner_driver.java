@@ -13,7 +13,7 @@ public class scanner_driver{
 		        System.out.write(x);
 		    }
 			while ((y = errorStream.read()) != -1){
-				System.out.write(y);
+				System.err.println(y);
 			}
 		}
 		catch(Exception e){
