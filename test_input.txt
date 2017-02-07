@@ -1,33 +1,33 @@
-class
-def
-extends
-if
-elif
-else
-while
-return
-String
-Integer
-Obj
-Boolean
-true
-false
-and
-or
-not
-Nothing
-none
-==, < =, <, >=, >
-foo
-_hello
-"farewell"
-123
-3 2 4
-//Hublah
-/* this is a test */
-/* fjaklsd;f
-afsdf fdj */
-"greetings"
-"""trips"""
-"test \n \0"
-++
+class JustTheTop( x: Int ) extends Obj
+	{
+	def STR() : String {
+			if 2 == 3 {
+			}
+			
+			elif y < x {
+			x = y; }
+			
+			else {
+			}
+			
+		 }
+	}
+
+class Another( y: Obj ) 
+	{	def STR() : String {
+		 }
+		 
+	def PLUS(other: Pt): Pt{
+	return Pt(this.x + other.x, this.y + other.y);
+	}
+		 }
+
+foo.y = 5;
+
+elif x=y {
+this.x = x;
+}
+
+while this and that{
+
+}

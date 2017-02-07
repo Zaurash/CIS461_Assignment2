@@ -19,7 +19,7 @@ non terminal Object     expr_list, expr_part;
 non terminal Integer    expr, factor, term;
 
 /* Apparently optional?? */
-precedence left PLUS, MINUS; 
+precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 
    expr_list ::= expr_list expr_part

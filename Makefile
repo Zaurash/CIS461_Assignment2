@@ -6,21 +6,23 @@ JFLEX = ./tools/jflex-1.6.1/bin/jflex
 
 LIBS = $(CUPLIB)
 
-all:  scanner_driver.class
+all:  test
+	
+test: scanner_driver.class test_input.txt
+	./parser test_input.txt
+	
+scanner_driver.class: scanner_driver.java Lexer.java parser.java
 
 %.class:	%.java
-	javac -cp .:$(CUPLIB) $<
+	javac -cp .:$(OTHERLIB) $^
 
-lex_scanner.java: lex_scanner.l  piazza_sym.java
+Lexer.java: lex_scanner.l
 	$(JFLEX) lex_scanner.l
 
-parser: test.cup
-	java -cp .:$(OTHERLIB) java_cup.Main < cup_parser.cup
+parser.java: cup_parser.cup
+	java -jar $(OTHERLIB) < cup_parser.cup
 
-scanner_driver.class: lex_scanner.class
-
-scanner: scanner_driver.class lex_scanner.class 
 
 #=================
 
-clean: ; rm *.class parser.java lex_scanner.java sym.java  *~
+clean: ; rm *.class parser.java Lexer.java sym.java  *~

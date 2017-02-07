@@ -1,16 +1,12 @@
-/* How does Cup work? */
-/* We're using cup to both work with the lexer and the parser? Are they different sections in the cup file? */
-
-
 import java_cup.runtime.*;
 
 %%
 
-%class lex_scanner
+%class Lexer
 %line
 %column
 %unicode
-%standalone
+%cup
 
 %{
   StringBuffer string = new StringBuffer();
@@ -47,56 +43,50 @@ Trips = [\"][\"][\"]
 {WhiteSpace} {/* ignore */}
 
 /* Keywords */
-<YYINITIAL> "class" {System.out.println(yyline + " CLASS " + "\"" + yytext() + "\"");}
-<YYINITIAL> "def" {System.out.println(yyline + " DEF " + "\"" + yytext() + "\"");}
-<YYINITIAL> "extends" {System.out.println(yyline + " EXTENDS " + "\"" + yytext() + "\"");}
-<YYINITIAL> "if" {System.out.println(yyline + " IF " + "\"" + yytext() + "\"");}
-<YYINITIAL> "elif" {System.out.println(yyline + " ELIF " + "\"" + yytext() + "\"");}
-<YYINITIAL> "else" {System.out.println(yyline + " ELSE " + "\"" + yytext() + "\"");}
-<YYINITIAL> "while" {System.out.println(yyline + " WHILE " + "\"" + yytext() + "\"");}
-<YYINITIAL> "return" {System.out.println(yyline + " RETURN " + "\"" + yytext() + "\"");}
-<YYINITIAL> "String" {System.out.println(yyline + " STRING " + "\"" + yytext() + "\"");}
-<YYINITIAL> "Integer" {System.out.println(yyline + " INTEGER " + "\"" + yytext() + "\"");}
-<YYINITIAL> "Obj" {System.out.println(yyline + " OBJ " + "\"" + yytext() + "\"");}
-<YYINITIAL> "Boolean" {System.out.println(yyline + " BOOLEAN " + "\"" + yytext() + "\"");}
-<YYINITIAL> "true" {System.out.println(yyline + " TRUE " + "\"" + yytext() + "\"");}
-<YYINITIAL> "false" {System.out.println(yyline + " FALSE " + "\"" + yytext() + "\"");}
-<YYINITIAL> "and" {System.out.println(yyline + " AND " + "\"" + yytext() + "\"");}
-<YYINITIAL> "or" {System.out.println(yyline + " OR " + "\"" + yytext() + "\"");}
-<YYINITIAL> "not" {System.out.println(yyline + " NOT " + "\"" + yytext() + "\"");}
-<YYINITIAL> "Nothing" {System.out.println(yyline + " NOTHING " + "\"" + yytext() + "\"");}
-<YYINITIAL> "none" {System.out.println(yyline + " none " + "\"" + yytext() + "\"");}
+<YYINITIAL> "class" {System.out.println(yyline + " CLASS " + "\"" + yytext() + "\""); return symbol(sym.CLASS);}
+<YYINITIAL> "def" {System.out.println(yyline + " DEF " + "\"" + yytext() + "\""); return symbol(sym.DEF);}
+<YYINITIAL> "extends" {System.out.println(yyline + " EXTENDS " + "\"" + yytext() + "\""); return symbol(sym.EXTENDS);}
+<YYINITIAL> "if" {System.out.println(yyline + " IF " + "\"" + yytext() + "\""); return symbol(sym.IF);}
+<YYINITIAL> "elif" {System.out.println(yyline + " ELIF " + "\"" + yytext() + "\""); return symbol(sym.ELIF);}
+<YYINITIAL> "else" {System.out.println(yyline + " ELSE " + "\"" + yytext() + "\""); return symbol(sym.ELSE);}
+<YYINITIAL> "while" {System.out.println(yyline + " WHILE " + "\"" + yytext() + "\""); return symbol(sym.WHILE);}
+<YYINITIAL> "return" {System.out.println(yyline + " RETURN " + "\"" + yytext() + "\""); return symbol(sym.RETURN);}
+/* <YYINITIAL> "String" {System.out.println(yyline + " STRING " + "\"" + yytext() + "\""); return symbol(sym.STRING);} */
+/* <YYINITIAL> "Integer" {System.out.println(yyline + " INTEGER " + "\"" + yytext() + "\""); return symbol(sym.INTEGER);} */
+<YYINITIAL> "and" {System.out.println(yyline + " AND " + "\"" + yytext() + "\""); return symbol(sym.AND);}
+<YYINITIAL> "or" {System.out.println(yyline + " OR " + "\"" + yytext() + "\""); return symbol(sym.OR);}
+<YYINITIAL> "not" {System.out.println(yyline + " NOT " + "\"" + yytext() + "\""); return symbol(sym.NOT);}
+<YYINITIAL> "none" {System.out.println(yyline + " none " + "\"" + yytext() + "\""); return symbol(sym.none);}
 
 
 /* Punctuation */
-[+] {System.out.println(yyline + " PLUS " + "\"" + yytext() + "\"");}
-[-] {System.out.println(yyline + " MINUS " + "\"" + yytext() + "\"");}
-[*] {System.out.println(yyline + " TIMES " + "\"" + yytext() + "\"");}
-[/] {System.out.println(yyline + " DIVIDE " + "\"" + yytext() + "\"");}
-[\(] {System.out.println(yyline + " LPAREN " + "\"" + yytext() + "\"");}
-[\)] {System.out.println(yyline + " RPAREN " + "\"" + yytext() + "\"");}
-[\[] {System.out.println(yyline + " LBRACE " + "\"" + yytext() + "\"");}
-[\]] {System.out.println(yyline + " RBRACE " + "\"" + yytext() + "\"");}
-[\{] {System.out.println(yyline + " LBRACKET " + "\"" + yytext() + "\"");}
-[\}] {System.out.println(yyline + " RBRACKET " + "\"" + yytext() + "\"");}
-[,] {System.out.println(yyline + " COMMA " + "\"" + yytext() + "\"");}
-[;] {System.out.println(yyline + " SEMICOLON " + "\"" + yytext() + "\"");}
-[.] {System.out.println(yyline + " DOT " + "\"" + yytext() + "\"");}
-[:] {System.out.println(yyline + " COLON " + "\"" + yytext() + "\"");}
-<YYINITIAL> "=" {System.out.println(yyline + " EQUALS " + "\"" + yytext() + "\"");}
-<YYINITIAL> "==" {System.out.println(yyline + " EQUALS " + "\"" + yytext() + "\"");}
-<YYINITIAL> "<=" {System.out.println(yyline + " ATMOST " + "\"" + yytext() + "\"");}
-<YYINITIAL> "<" {System.out.println(yyline + " LESS " + "\"" + yytext() + "\"");}
-<YYINITIAL> ">=" {System.out.println(yyline + " ATLEAST " + "\"" + yytext() + "\"");}
-<YYINITIAL> ">" {System.out.println(yyline + " MORE " + "\"" + yytext() + "\"");}
-
+[+] {System.out.println(yyline + " PLUS " + "\"" + yytext() + "\""); return symbol(sym.PLUS);}
+[-] {System.out.println(yyline + " MINUS " + "\"" + yytext() + "\""); return symbol(sym.MINUS);}
+[*] {System.out.println(yyline + " TIMES " + "\"" + yytext() + "\""); return symbol(sym.TIMES);}
+[/] {System.out.println(yyline + " DIVIDE " + "\"" + yytext() + "\""); return symbol(sym.DIVIDE);}
+[\(] {System.out.println(yyline + " LPAREN " + "\"" + yytext() + "\""); return symbol(sym.LPAREN);}
+[\)] {System.out.println(yyline + " RPAREN " + "\"" + yytext() + "\""); return symbol(sym.RPAREN);}
+[\[] {System.out.println(yyline + " LBRACE " + "\"" + yytext() + "\""); return symbol(sym.LBRACE);}
+[\]] {System.out.println(yyline + " RBRACE " + "\"" + yytext() + "\""); return symbol(sym.RBRACE);}
+[\{] {System.out.println(yyline + " LBRACKET " + "\"" + yytext() + "\""); return symbol(sym.LBRACKET);}
+[\}] {System.out.println(yyline + " RBRACKET " + "\"" + yytext() + "\""); return symbol(sym.RBRACKET);}
+[,] {System.out.println(yyline + " COMMA " + "\"" + yytext() + "\""); return symbol(sym.COMMA);}
+[;] {System.out.println(yyline + " SEMICOLON " + "\"" + yytext() + "\""); return symbol(sym.SEMICOLON);}
+[.] {System.out.println(yyline + " DOT " + "\"" + yytext() + "\""); return symbol(sym.DOT);}
+[:] {System.out.println(yyline + " COLON " + "\"" + yytext() + "\""); return symbol(sym.COLON);}
+<YYINITIAL> "=" {System.out.println(yyline + " EQUALS " + "\"" + yytext() + "\""); return symbol(sym.EQUALS);}
+<YYINITIAL> "==" {System.out.println(yyline + " EQUALS " + "\"" + yytext() + "\""); return symbol(sym.EQUALS);}
+<YYINITIAL> "<=" {System.out.println(yyline + " ATMOST " + "\"" + yytext() + "\""); return symbol(sym.ATMOST);}
+<YYINITIAL> "<" {System.out.println(yyline + " LESS " + "\"" + yytext() + "\""); return symbol(sym.LESS);}
+<YYINITIAL> ">=" {System.out.println(yyline + " ATLEAST " + "\"" + yytext() + "\""); return symbol(sym.ATLEAST);}
+<YYINITIAL> ">" {System.out.println(yyline + " MORE " + "\"" + yytext() + "\""); return symbol(sym.MORE);}
 
 /* Identifiers */
-<YYINITIAL> {Identifier} {System.out.println(yyline + " IDENT " + "\"" + yytext() + "\"");}
+<YYINITIAL> {Identifier} {System.out.println(yyline + " IDENT " + "\"" + yytext() + "\""); return symbol(sym.IDENT);}
 
 
 /* Ditto Integers */
-<YYINITIAL> {DittoInteger} {System.out.println(yyline + " INT " + "\"" + yytext() + "\"");}
+<YYINITIAL> {DittoInteger} {System.out.println(yyline + " INT " + "\"" + yytext() + "\""); return symbol(sym.INT);}
 
 
 /* Comments */
@@ -110,8 +100,8 @@ Trips = [\"][\"][\"]
 
 
 <STRING> {
-  \" {yybegin(YYINITIAL); System.out.println(yyline + " STRING " + "\"" + string.toString() + "\"");}
-  {Trips} {yybegin(YYINITIAL); System.out.println(yyline + " STRING " + "\"" + string.toString() + "\"");}
+  \" {yybegin(YYINITIAL); System.out.println(yyline + " STRING " + "\"" + string.toString() + "\""); return symbol(sym.STRING);}
+  {Trips} {yybegin(YYINITIAL); System.out.println(yyline + " STRING " + "\"" + string.toString() + "\""); return symbol(sym.STRING);}
   [^\n\r\"\\]+ { string.append( yytext() ); }
   \\0 {string.append('\0');}
   \\b {string.append('\b');}
@@ -122,5 +112,7 @@ Trips = [\"][\"][\"]
   \\\" {string.append('\"');}
   \\  {string.append('\\');}
 }
+
+
 
 

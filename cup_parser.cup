@@ -1,14 +1,128 @@
+/* init with / scan with? */
+/* Should == be different from = */
+/* Line number off? */
+
 import java_cup.runtime.*;
 
-parser code {:
+terminal	CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN;
+terminal	AND, OR, NOT, none;
+terminal	PLUS, MINUS, TIMES, DIVIDE;
+terminal	EQUALS, ATMOST, LESS, ATLEAST, MORE;
+terminal	LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET;
+terminal	COMMA, SEMICOLON, DOT, COLON;
+terminal	IDENT;
+terminal	INT, STRING;
+
+non terminal Object Program, Statements, Statement, Classes, Class, Class_Signature, Class_Body, Statement_Block, OptExtends;
+non terminal Object Formals, Formals_nonEmpty, Formal_Arg, Methods, Method, Actual_Args, L_Expr, R_Expr, Args_nonEmpty;
+non terminal Object If_Statement, Return_Statement, Elif_Statement, Else_Statement;
+
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left EQUALS, ATMOST, ATLEAST, LESS, MORE, AND, OR, NOT;
+precedence left DOT;
 
 
-:};
+   Program 			::= Classes Statements
+   					;
+					
+   Statements		::= Statements Statement
+   					|
+					;
+   
+   Classes			::= Classes Class
+   					|	
+					;
+   
+   Class   			::= Class_Signature Class_Body
+   					;
+   
+   Class_Signature  ::= CLASS IDENT LPAREN Formals RPAREN OptExtends
+   					;
+					
+   OptExtends		::= EXTENDS IDENT
+   					|
+					;
+					
+   Class_Body		::= LBRACKET Statements Methods RBRACKET
+   					;
+					
+   Statement_Block ::=	LBRACKET Statements RBRACKET
+   					;
+					
+   Statement		::= If_Statement Elif_Statement Else_Statement
+					|	WHILE R_Expr Statement_Block
+					|	Return_Statement
+					|	L_Expr COLON IDENT EQUALS R_Expr SEMICOLON
+					;
+				
+   If_Statement		::=	IF R_Expr Statement_Block
+					;
+		
+   Elif_Statement	::=	ELIF R_Expr Statement_Block
+   					|
+					;
+					
+   Else_Statement	::= ELSE Statement_Block
+   					|
+					;
+			
+   Return_Statement	::=	RETURN SEMICOLON
+   					|	RETURN R_Expr SEMICOLON
+					;
+   
+   Formals			::= Formals_nonEmpty
+   					|	
+   					;
+					
+   Formals_nonEmpty ::= Formals_nonEmpty COMMA Formal_Arg
+   					|	Formal_Arg
+					;
+					
+   Formal_Arg		::=	IDENT COLON IDENT
+   					;
+					
+   Methods			::= Methods Method
+   					|
+					;
+   
+   Method			::= DEF IDENT LPAREN Formals RPAREN COLON IDENT Statement_Block
+   					;
+					
+   Actual_Args		::= Args_nonEmpty
+					|	
+					;
+					
+   Args_nonEmpty	::= Args_nonEmpty COMMA R_Expr
+					|	R_Expr
+					;
+					
+	L_Expr			::= IDENT
+					| 	R_Expr DOT IDENT
+					;
+	
+	R_Expr			::= STRING
+					|	INT
+					| 	L_Expr
+					|	R_Expr PLUS R_Expr
+					|	R_Expr MINUS R_Expr
+					|	R_Expr TIMES R_Expr
+					|	R_Expr DIVIDE R_Expr
+					|	MINUS R_Expr
+					|	LPAREN R_Expr RPAREN
+					|	R_Expr EQUALS R_Expr
+					| 	R_Expr ATMOST R_Expr
+					| 	R_Expr ATLEAST R_Expr
+					| 	R_Expr LESS R_Expr
+					| 	R_Expr MORE R_Expr
+					| 	R_Expr AND R_Expr
+					| 	R_Expr OR R_Expr
+					| 	R_Expr NOT R_Expr
+					|	R_Expr DOT IDENT LPAREN Actual_Args RPAREN
+					|	IDENT LPAREN Actual_Args RPAREN
+					;
+					
 
-terminal	CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN, STRING, INTEGER, OBJ, BOOLEAN, TRUE, FALSE, AND, OR, NOT, NOTHING, none, PLUS, MINUS, TIMES, DIVIDE, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, COMMA, SEMICOLON, DOT, COLON, EQUALS, ATMOST, LESS, ATLEAST, MORE, IDENT, INT
-
-non terminal Object     expr_list, expr_part;
-
-   expr_list ::= expr_list expr_part
-                 |
-                 expr_part;
+					
+					
+					
