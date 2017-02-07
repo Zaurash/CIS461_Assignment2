@@ -54,7 +54,7 @@ terminal	INT, STRING;
 
 non terminal Object Program, Statements, Statement, Classes, Class, Class_Signature, Class_Body, Statement_Block, OptExtends;
 non terminal Object Formals, Formals_nonEmpty, Formal_Arg, Methods, Method, Actual_Args, L_Expr, R_Expr, Args_nonEmpty;
-non terminal Object If_Statement, Return_Statement, Elif_Statement, Elif_Statements, Else_Statement;
+non terminal Object Return_Statement, Elif_Statement, Elif_Statements, Else_Statement;
 
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
@@ -89,18 +89,14 @@ precedence left DOT;
    Statement_Block ::=	LBRACKET Statements RBRACKET
    					;
 					
-   Statement		::= If_Statement Elif_Statement Else_Statement
+   Statement		::= IF R_Expr Statement_Block Elif_Statements Else_Statement
 					|	WHILE R_Expr Statement_Block
 					|	Return_Statement
 					|	L_Expr COLON IDENT EQUALS R_Expr SEMICOLON
 					|	L_Expr EQUALS R_Expr SEMICOLON
 					;
-				
-   If_Statement		::=	IF R_Expr Statement_Block
-					;
 					
    Elif_Statements	::= Elif_Statements Elif_Statement
-   					|	Elif_Statement
 					|
 					;
 		
