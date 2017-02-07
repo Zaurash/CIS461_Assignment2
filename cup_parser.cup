@@ -4,6 +4,45 @@
 
 import java_cup.runtime.*;
 
+parser code {:
+
+	int error_counter = 0;
+
+    public void report_error(String message, Object info) {
+	
+		if (error_counter > 20){
+		System.err.println("There are more than 20 errors");
+		System.exit(1);
+		}
+		
+		error_counter++;
+   
+        StringBuilder m = new StringBuilder("Error");
+   
+        if (info instanceof java_cup.runtime.Symbol) {
+
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+   
+            if (s.left >= 0) {                
+                m.append(" in line "+(s.left+1));   
+
+                if (s.right >= 0)                    
+
+                    m.append(", column "+(s.right+1));
+            }
+        }
+   
+        m.append(" : "+message);
+   
+        System.err.println(m);
+    }
+   
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+:};
+
 terminal	CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN;
 terminal	AND, OR, NOT, none;
 terminal	PLUS, MINUS, TIMES, DIVIDE;
@@ -15,7 +54,7 @@ terminal	INT, STRING;
 
 non terminal Object Program, Statements, Statement, Classes, Class, Class_Signature, Class_Body, Statement_Block, OptExtends;
 non terminal Object Formals, Formals_nonEmpty, Formal_Arg, Methods, Method, Actual_Args, L_Expr, R_Expr, Args_nonEmpty;
-non terminal Object If_Statement, Return_Statement, Elif_Statement, Else_Statement;
+non terminal Object If_Statement, Return_Statement, Elif_Statement, Elif_Statements, Else_Statement;
 
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
@@ -54,13 +93,18 @@ precedence left DOT;
 					|	WHILE R_Expr Statement_Block
 					|	Return_Statement
 					|	L_Expr COLON IDENT EQUALS R_Expr SEMICOLON
+					|	L_Expr EQUALS R_Expr SEMICOLON
 					;
 				
    If_Statement		::=	IF R_Expr Statement_Block
 					;
+					
+   Elif_Statements	::= Elif_Statements Elif_Statement
+   					|	Elif_Statement
+					|
+					;
 		
    Elif_Statement	::=	ELIF R_Expr Statement_Block
-   					|
 					;
 					
    Else_Statement	::= ELSE Statement_Block

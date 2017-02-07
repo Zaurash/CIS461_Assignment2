@@ -24,10 +24,10 @@ class Another( y: Obj )
 
 foo.y = 5;
 
-elif x=y {
+if x=y {
 this.x = x;
 }
 
-while this and that{
-
+while x < 5{
+this.k = f;
 }
