@@ -1,8 +1,5 @@
-/* init with / scan with? */
-/* Should == be different from = */
-/* Line number off? */
-
 import java_cup.runtime.*;
+import java.util.*;
 
 parser code {:
 
@@ -43,18 +40,20 @@ parser code {:
     }
 :};
 
-terminal	CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN;
-terminal	AND, OR, NOT, none;
-terminal	PLUS, MINUS, TIMES, DIVIDE;
-terminal	EQUALS, ATMOST, LESS, ATLEAST, MORE;
-terminal	LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET;
-terminal	COMMA, SEMICOLON, DOT, COLON;
-terminal	IDENT;
-terminal	INT, STRING;
+terminal			CLASS, DEF, EXTENDS, IF, ELIF, ELSE, WHILE, RETURN;
+terminal			AND, OR, NOT, none;
+terminal			PLUS, MINUS, TIMES, DIVIDE;
+terminal			EQUALS, ATMOST, LESS, ATLEAST, MORE;
+terminal			LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET;
+terminal			COMMA, SEMICOLON, DOT, COLON;
+terminal Integer 	INT;
+terminal String 	STRING, IDENT;
 
-non terminal Object Program, Statements, Statement, Classes, Class, Class_Signature, Class_Body, Statement_Block, OptExtends;
-non terminal Object Formals, Formals_nonEmpty, Formal_Arg, Methods, Method, Actual_Args, L_Expr, R_Expr, Args_nonEmpty;
-non terminal Object Return_Statement, Elif_Statement, Elif_Statements, Else_Statement;
+non terminal 			Program, Statement, Class, Class_Signature, Class_Body, Statement_Block;
+non terminal 			Formals, Formals_nonEmpty, Formal_Arg, Methods, Method, Actual_Args, L_Expr, R_Expr, Args_nonEmpty;
+non terminal 			Return_Statement, Elif_Statement, Elif_Statements, Else_Statement;
+non terminal 			OptExtends;
+non terminal 			Classes, Statements;
 
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
@@ -66,21 +65,21 @@ precedence left DOT;
    					;
 					
    Statements		::= Statements Statement
-   					|
+   					|								
 					;
    
-   Classes			::= Classes Class
-   					|	
+   Classes			::= Classes:cs Class:c 	
+   					|						
 					;
    
-   Class   			::= Class_Signature Class_Body
+   Class   			::= Class_Signature Class_Body 	
    					;
    
-   Class_Signature  ::= CLASS IDENT LPAREN Formals RPAREN OptExtends
+   Class_Signature  ::= CLASS IDENT LPAREN Formals RPAREN OptExtends	
    					;
 					
-   OptExtends		::= EXTENDS IDENT
-   					|
+   OptExtends		::= EXTENDS IDENT	
+   					|						
 					;
 					
    Class_Body		::= LBRACKET Statements Methods RBRACKET
@@ -94,6 +93,7 @@ precedence left DOT;
 					|	Return_Statement
 					|	L_Expr COLON IDENT EQUALS R_Expr SEMICOLON
 					|	L_Expr EQUALS R_Expr SEMICOLON
+					|	R_Expr SEMICOLON
 					;
 					
    Elif_Statements	::= Elif_Statements Elif_Statement
@@ -141,14 +141,14 @@ precedence left DOT;
 					| 	R_Expr DOT IDENT
 					;
 	
-	R_Expr			::= STRING
+	R_Expr			::= STRING									
 					|	INT
 					| 	L_Expr
 					|	R_Expr PLUS R_Expr
 					|	R_Expr MINUS R_Expr
 					|	R_Expr TIMES R_Expr
 					|	R_Expr DIVIDE R_Expr
-					|	MINUS R_Expr
+					|	MINUS INT
 					|	LPAREN R_Expr RPAREN
 					|	R_Expr EQUALS R_Expr
 					| 	R_Expr ATMOST R_Expr
